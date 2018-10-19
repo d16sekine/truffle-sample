@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/d16sekine/truffle-sample#readme",
   "dependencies": {
+    "openzeppelin-solidity": "1.12.0",
     "web3": "^0.20.0"
   }
 }
