@@ -21,12 +21,12 @@ module.exports = {
       gas: 2000000000,   // <--- Twice as much
       gasPrice: 100000000000,
     },
-    // lgeth: {
-    //   host:"localhost",
-    //   port: 8545,
-    //   network_id: '5494',
-    //   gas: 4500000,
-    //   gasPrice: 10000000000,
-    // }
+    localgeth: {
+      host:"localhost",
+      port: 8545,
+      network_id: '5494',
+      gas: 4500000,
+      gasPrice: 10000000000,
+    }
   }
 };
