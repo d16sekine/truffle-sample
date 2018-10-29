@@ -1,18 +1,19 @@
 pragma solidity ^0.4.22;
 
-import "openzeppelin-solidity/contracts/token/ERC20/StandardToken.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/ERC20Detailed.sol";
 
-contract MyTokens is StandardToken {
+contract MyTokens is ERC20, ERC20Detailed {
 
-    string public _name = "SampleDappCoin";  //変更可能
-    string public _symbol = "SDC"; //変更可能
-    uint8 public _decimals = 18;
-    uint public INITIAL_SUPPLY = 1000; //変更可能
+    string private _name = "SampleDappCoin";  //変更可能
+    string private _symbol = "SDC"; //変更可能
+    uint8 private _decimals = 18;
 
-    mapping(address => uint) private _balances;
-
-    constructor() public {
-     _balances[msg.sender] = INITIAL_SUPPLY;
-  }
+    address account = msg.sender;
+    uint value = 1000000;
+    constructor() ERC20Detailed( _name, _symbol, _decimals) public {
+            _mint(account, value);
+    }
+  
 
 }
