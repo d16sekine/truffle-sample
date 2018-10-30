@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>ERC20 API TEST Page</title>
+
+        <!-- Bootstrap -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <script>
+
+            const baseURL = "http://localhost:3000/tokens";
+            const tokenAddress = "0x6dc9d424b5514f249c73093295917440a1614474";
+            const coinbaseAddress = "0x666215de7f0a5245c1436fcd1dd5f60557ebfee0";
+
+            function transfer(){
+
+                let url = baseURL + "/transferToken";
+
+                const obj = {
+                    tokenAddress : tokenAddress,
+                    sender: coinbaseAddress,
+                    reciever :"0xc62076b372901f860ac48203c859ede09e82bfe5",
+                    tokens: 10,
+                    privateKey: ""
+                };
+                const method = "POST";
+                const body = JSON.stringify(obj);
+                const mode =  'cors';
+                const headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                };
+                fetch(url, {method, headers, mode, body}).then((res)=> res.json()).then(console.log).catch(console.error);
+
+            }
+
+            function getBalance(){
+
+            let url = baseURL + "/getBalance?tokenAddress=" + tokenAddress + "&address=" + coinbaseAddress;
+
+            fetch(url).then((res)=> res.json()).then(console.log).catch(console.error);
+
+            }
+
+            function totalSupply(){
+
+                let url = baseURL + "/getTotalSuppy?tokenAddress=" + tokenAddress;
+
+                fetch(url).then((res)=> res.json()).then(console.log).catch(console.error);
+
+            }
+
+        </script>
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+                <a class="navbar-brand" href="./index.html">ERC20 API TEST Page</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#Navbar" aria-controls="Navbar" aria-expanded="false" aria-label="ナビゲーションの切替">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                </nav>
+            </header>
+        <h1>Contents</h1>
+        <ul>
+            <li> <button type="button" class="btn btn-primary" onclick = "totalSupply()">totalSupply</button></li>
+            <li> <button type="button" class="btn btn-primary" onclick = "getBalance()">balance</button></li>
+            <li> <button type="button" class="btn btn-primary" onclick = "transfer()">transfer</button></li>
+            <!-- <li><a href="./apigateway.html">API Gateway</a></li>
+            <li><a href="./update-attributes.html">Update Attributes</a></li> -->
+        </ul>
+    </body>
+</html>
