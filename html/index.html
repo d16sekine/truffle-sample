@@ -7,22 +7,62 @@
 
         <!-- Bootstrap -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
+        <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
         <script>
 
             const baseURL = "http://localhost:3000/tokens";
             const tokenAddress = "0x6dc9d424b5514f249c73093295917440a1614474";
             const coinbaseAddress = "0x666215de7f0a5245c1436fcd1dd5f60557ebfee0";
 
+            $(document).ready(function(){
+                console.debug("ready");
+                $("#addressCoinbase").val(coinbaseAddress);
+                $("#addressTokenContract").val(tokenAddress);
+                $("#amount").val(10);
+            });
+            
+
             function transfer(){
+
+                let reciever = $("#reciever").val();
+                let amount = $("#amount").val();
 
                 let url = baseURL + "/transferToken";
 
                 const obj = {
                     tokenAddress : tokenAddress,
                     sender: coinbaseAddress,
-                    reciever :"0xc62076b372901f860ac48203c859ede09e82bfe5",
-                    tokens: 10,
-                    privateKey: ""
+                    reciever :reciever,
+                    tokens: amount
+                };
+                const method = "POST";
+                const body = JSON.stringify(obj);
+                const mode =  'cors';
+                const headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                };
+                fetch(url, {method, headers, mode, body}).then((res)=> res.json()).then(console.log).catch(console.error);
+
+            }
+
+            function transferFrom(){
+
+            let sender = $("#sender").val();
+            let reciever = $("#reciever").val();
+            let amount = $("#amount").val();
+
+            let url = baseURL + "/transferFromToken";
+
+                const obj = {
+                    tokenAddress : tokenAddress,
+                    sender: sender,
+                    reciever :reciever,
+                    tokens: amount,
+                    passPhrase: "test"
                 };
                 const method = "POST";
                 const body = JSON.stringify(obj);
@@ -37,15 +77,30 @@
 
             function getBalance(){
 
-            let url = baseURL + "/getBalance?tokenAddress=" + tokenAddress + "&address=" + coinbaseAddress;
+                let targetAddress = $("#addressTarget").val();
 
-            fetch(url).then((res)=> res.json()).then(console.log).catch(console.error);
+                let url = baseURL + "/getBalance?tokenAddress=" + tokenAddress + "&address=" + targetAddress;
+
+                console.log("url:",url)
+
+                fetch(url).then((res)=> res.json()).then(console.log).catch(console.error);
 
             }
 
             function totalSupply(){
 
                 let url = baseURL + "/getTotalSuppy?tokenAddress=" + tokenAddress;
+
+                fetch(url).then((res)=> res.json()).then(console.log).catch(console.error);
+
+            }
+
+            function getAllowance(){
+
+                let sender = $("#sender").val();
+                let reciever = $("#reciever").val();
+
+                let url = baseURL + "/getAllowance?tokenAddress=" + tokenAddress + "&sender=" + sender + "&reciever=" + reciever;
 
                 fetch(url).then((res)=> res.json()).then(console.log).catch(console.error);
 
@@ -63,10 +118,30 @@
                 </nav>
             </header>
         <h1>Contents</h1>
-        <ul>
-            <li> <button type="button" class="btn btn-primary" onclick = "totalSupply()">totalSupply</button></li>
-            <li> <button type="button" class="btn btn-primary" onclick = "getBalance()">balance</button></li>
-            <li> <button type="button" class="btn btn-primary" onclick = "transfer()">transfer</button></li>
+        
+            <div class="form-group">
+                    <label>Coinbase Address(Token Deploy)</label>
+                    <input type="text" id ="addressCoinbase" class="form-control" placeholder="Ethereum Address">
+                    <label>Token Address</label>
+                    <input type="text" id ="addressTokenContract" class="form-control" placeholder="Token Contract Address">
+                </div>
+                <button type="button" class="btn btn-primary" onclick = "totalSupply()">totalSupply</button>
+                <div class="form-group">
+                        <label>Target Address</label>
+                        <input type="text" id ="addressTarget" class="form-control" placeholder="Ethereum Address">
+                </div>
+            <button type="button" class="btn btn-primary" onclick = "getBalance()">getBalance</button>
+            <div class="form-group">
+                    <label>Sender Address</label>
+                    <input type="text" id ="sender" class="form-control" placeholder="Ethereum Address">
+                    <label>Reciever Address</label>
+                    <input type="text" id ="reciever" class="form-control" placeholder="Ethereum Address">
+                    <label>Token Amount</label>
+                    <input type="text" id ="amount" class="form-control" placeholder="amount">
+            </div>
+            <button type="button" class="btn btn-primary" onclick = "getAllowance()">getAllowance</button>
+            <button type="button" class="btn btn-primary" onclick = "transfer()">transfer</button>
+            <button type="button" class="btn btn-primary" onclick = "transferFrom()">transferFrom</button>
             <!-- <li><a href="./apigateway.html">API Gateway</a></li>
             <li><a href="./update-attributes.html">Update Attributes</a></li> -->
         </ul>
