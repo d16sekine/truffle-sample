@@ -13,7 +13,7 @@
             crossorigin="anonymous"></script>
         <script>
 
-            const baseURL = "http://localhost:3000/tokens";
+            const baseURL = "http://localhost:3000/";
             const tokenAddress = "0x6dc9d424b5514f249c73093295917440a1614474";
             const coinbaseAddress = "0x666215de7f0a5245c1436fcd1dd5f60557ebfee0";
 
@@ -30,7 +30,7 @@
                 let reciever = $("#reciever").val();
                 let amount = $("#amount").val();
 
-                let url = baseURL + "/transferToken";
+                let url = baseURL + "tokens/transferToken";
 
                 const obj = {
                     tokenAddress : tokenAddress,
@@ -55,7 +55,7 @@
             let reciever = $("#reciever").val();
             let amount = $("#amount").val();
 
-            let url = baseURL + "/transferFromToken";
+            let url = baseURL + "tokens/transferFromToken";
 
                 const obj = {
                     tokenAddress : tokenAddress,
@@ -79,7 +79,7 @@
 
                 let targetAddress = $("#addressTarget").val();
 
-                let url = baseURL + "/getBalance?tokenAddress=" + tokenAddress + "&address=" + targetAddress;
+                let url = baseURL + "tokens/getBalance?tokenAddress=" + tokenAddress + "&address=" + targetAddress;
 
                 console.log("url:",url)
 
@@ -89,7 +89,7 @@
 
             function totalSupply(){
 
-                let url = baseURL + "/getTotalSuppy?tokenAddress=" + tokenAddress;
+                let url = baseURL + "tokens/getTotalSuppy?tokenAddress=" + tokenAddress;
 
                 fetch(url).then((res)=> res.json()).then(console.log).catch(console.error);
 
@@ -100,9 +100,29 @@
                 let sender = $("#sender").val();
                 let reciever = $("#reciever").val();
 
-                let url = baseURL + "/getAllowance?tokenAddress=" + tokenAddress + "&sender=" + sender + "&reciever=" + reciever;
+                let url = baseURL + "tokens/getAllowance?tokenAddress=" + tokenAddress + "&sender=" + sender + "&reciever=" + reciever;
 
                 fetch(url).then((res)=> res.json()).then(console.log).catch(console.error);
+
+            }
+
+            function createAccount(){
+
+                let password = $("#passord").val();
+
+                let url = baseURL + "accounts";
+
+                    const obj = {
+                        password: password
+                    };
+                    const method = "POST";
+                    const body = JSON.stringify(obj);
+                    const mode =  'cors';
+                    const headers = {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    };
+                    fetch(url, {method, headers, mode, body}).then((res)=> res.json()).then(console.log).catch(console.error);
 
             }
 
@@ -118,7 +138,11 @@
                 </nav>
             </header>
         <h1>Contents</h1>
-        
+        <div class="form-group">
+                <label>new Address password</label>
+                <input type="text" id ="password" class="form-control" placeholder="Ethereum Address">
+            </div>
+            <button type="button" class="btn btn-primary" onclick = "createAccount()">create new Account</button>
             <div class="form-group">
                     <label>Coinbase Address(Token Deploy)</label>
                     <input type="text" id ="addressCoinbase" class="form-control" placeholder="Ethereum Address">
